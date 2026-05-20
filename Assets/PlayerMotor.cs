@@ -16,15 +16,27 @@ public class PlayerMotor : MonoBehaviour
     private bool canDash = true;
     public float maxJump = 2;
     private float currentJump = 0;
+    private Animator _animator;
+    private float _initScale;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _initScale = transform.localScale.x;
     }
 
     // Fixedupdate 40/sec
     void FixedUpdate()
     {
+        if (direction.x > 0)
+        {
+            transform.localScale = new Vector3(_initScale, transform.localScale.y, transform.localScale.z);
+        }
+        else if (direction.x < 0) 
+        {
+            transform.localScale = new Vector3(-_initScale, transform.localScale.y, transform.localScale.z);
+        }
         PlayerMovmentHandle();
         PlayerMovmentStopping();
     }
@@ -34,10 +46,15 @@ public class PlayerMotor : MonoBehaviour
         if (direction.x != 0)
         {
             rigidbody2D.AddForce(new Vector2(direction.x * speed, 0));
+            _animator.SetBool("IsMoving" , true);
         }
         else if (rigidbody2D.linearVelocityX != 0)
         {
             rigidbody2D.AddForce(new Vector2(-rigidbody2D.linearVelocityX * stoppingForce, 0));
+        }
+        if(direction.x == 0)
+        {
+            _animator.SetBool("IsMoving", false);
         }
     }
 
@@ -54,6 +71,7 @@ public class PlayerMotor : MonoBehaviour
         else if (rigidbody2D.linearVelocityX <= -maxSpeed)
         {
             rigidbody2D.linearVelocityX = -maxSpeed;
+  
         }
     }
 
