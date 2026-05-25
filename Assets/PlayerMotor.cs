@@ -29,6 +29,7 @@ public class PlayerMotor : MonoBehaviour
     // Fixedupdate 40/sec
     void FixedUpdate()
     {
+        _animator.SetFloat("SpeedY", rigidbody2D.linearVelocityY);
         if (direction.x > 0)
         {
             transform.localScale = new Vector3(_initScale, transform.localScale.y, transform.localScale.z);
