@@ -49,11 +49,11 @@ public class HealthComponent : MonoBehaviour
     public void RemoveDamage(float heal)
     {
         health += heal;
-        OnHealthChanged?.Invoke(health, heal);
         if (health >= maxHealth)
         {
             health = maxHealth;
         }
+        OnHealthChanged?.Invoke(health, heal);
         //Debug.Log(health);
     }
 }
